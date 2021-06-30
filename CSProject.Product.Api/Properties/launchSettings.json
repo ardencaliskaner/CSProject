@@ -19,12 +19,12 @@
     },
     "CSProject.Product.Api": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      //"launchBrowser": true,
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5004;http://localhost:4004"
+      "applicationUrl": "https://localhost:5003;http://localhost:4003"
     },
     "Docker": {
       "commandName": "Docker",

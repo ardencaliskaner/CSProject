@@ -38,7 +38,7 @@
     //  "DownstreamHostAndPorts": [
     //    {
     //      "Host": "localhost",
-    //      "Port": 5004
+    //      "Port": 5003
     //    }
     //  ],
     //  "UpstreamPathTemplate": "/api/home",
@@ -52,7 +52,7 @@
       "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
       "DownstreamScheme": "http",
-      "ServiceName": "testapi",
+      "ServiceName": "productapi",
       "UpstreamPathTemplate": "/{url}",
       "UpstreamHttpMethod": [ "Get" ]
     }
