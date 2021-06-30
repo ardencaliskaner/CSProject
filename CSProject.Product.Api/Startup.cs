@@ -24,10 +24,13 @@ namespace CSProject.Product.Api
         {
             _configuration = configuration;
 
+            RegisterServiceToConsul();
+
         }
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureServices(_configuration);
+            ConfigureConsul(services);
             services.AddMvc();
         }
 
@@ -52,71 +55,32 @@ namespace CSProject.Product.Api
             });
         }
 
+        private void RegisterServiceToConsul()
+        {
+            using (var client = new ConsulClient())
+            {
+                var registration = new AgentServiceRegistration()
+                {
+                    ID = "productapi",
+                    Name = "productapi",
+                    Address = "localhost",
+                    Port = 4003,
+                    Check = new AgentCheckRegistration()
+                    {
+                        HTTP = "http://localhost:4003",
+                        Interval = TimeSpan.FromSeconds(10)
+                    }
+                };
 
-        //public Startup(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
+                client.Agent.ServiceRegister(registration).Wait();
+            }
+        }
 
-        //    RegisterServiceToConsul();
-        //}
+        private void ConfigureConsul(IServiceCollection services)
+        {
+            var serviceConfig = _configuration.GetServiceConfig();
 
-        //public IConfiguration Configuration { get; }
-
-        //// This method gets called by the runtime. Use this method to add services to the container.
-        //public void ConfigureServices(IServiceCollection services)
-        //{
-        //    ConfigureConsul(services);
-
-        //    services.AddControllers();
-        //}
-
-        //// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        //{
-        //    if (env.IsDevelopment())
-        //    {
-        //        app.UseDeveloperExceptionPage();
-        //    }
-
-        //    app.UseHttpsRedirection();
-
-        //    app.UseRouting();
-
-        //    app.UseAuthorization();
-
-
-        //    app.UseEndpoints(endpoints =>
-        //    {
-        //        endpoints.MapControllers();
-        //    });
-        //}
-
-        //private void ConfigureConsul(IServiceCollection services)
-        //{
-        //    var serviceConfig = Configuration.GetServiceConfig();
-
-        //    services.RegisterConsulServices(serviceConfig);
-        //}
-
-        //private void RegisterServiceToConsul()
-        //{
-        //    using (var client = new ConsulClient())
-        //    {
-        //        var registration = new AgentServiceRegistration()
-        //        {
-        //            ID = "productapi",
-        //            Name = "productapi",
-        //            Address = "localhost",
-        //            Port = 5003,
-        //            Check = new AgentCheckRegistration()
-        //            {
-        //                HTTP = "http://localhost:5003",
-        //                Interval = TimeSpan.FromSeconds(10)
-        //            }
-        //        };
-
-        //        client.Agent.ServiceRegister(registration).Wait();
-        //    }
-        //}
+            services.RegisterConsulServices(serviceConfig);
+        }
     }
 }
