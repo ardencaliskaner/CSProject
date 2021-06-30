@@ -1,0 +1,63 @@
+﻿version: '3'
+services:
+    #ms-sql-server:
+    #    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    #    environment:
+    #        SA_PASSWORD: "Ardentest123"
+    #        ACCEPT_EULA: "Y"
+    #        MSSQL_PID: Express
+    #    ports:
+    #        - "1433:1433"
+    #    networks:
+    #        - docker-network
+
+    colour-api:
+        restart: always
+        build:  
+            context: .
+        ports: 
+            - "8080:80"
+            - "8090:443"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+;http://+
+            - ASPNETCORE_HTTPS_PORT=8090
+        volumes:
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https/
+            - ${APPDATA}/microsoft/UserSecrets\:/root/.microsoft/usersecrets
+        #depends_on:
+        #    - ms-sql-server
+        #environment:
+        #    DBServer: "ms-sql-server"
+        networks:
+            - docker-network
+
+    #consul-server1:
+    #    image: consul:1.9.3
+    #    container_name: consul-server1
+    #    restart: always
+    #    volumes:
+    #      - ./server1.json:/consul/config/server1.json:ro
+    #      - ./certs/:/consul/config/certs/:ro
+    #    networks:
+    #      - docker-network
+    #    ports:
+    #      - '8500:8500'
+    #      - '8600:8600/tcp'
+    #      - '8600:8600/udp'
+    #    command: 'agent -bootstrap-expect=1'
+
+    #consul-client:
+    #    image: consul:1.9.3
+    #    container_name: consul-client
+    #    restart: always
+    #    volumes:
+    #      - ./client.json:/consul/config/client.json:ro
+    #      - ./certs/consul-agent-ca.pem:/consul/config/certs/consul-agent-ca.pem:ro
+    #    networks:
+    #      - docker-network
+    #    command: 'agent'
+
+networks:
+    docker-network:
+        driver: bridge
