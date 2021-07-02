@@ -24,4 +24,3 @@ namespace CSProject.Product.Api
                 .Build();
     }
 }
-

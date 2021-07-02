@@ -1,0 +1,61 @@
+version: '3.4'
+
+services:
+  csproject.product.api:
+    container_name: "csproject.product.api"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ServiceConfig__serviceDiscoveryAddress=http://consul-server1:8500
+      - ServiceConfig__serviceAddress=http://csproject.product.api:8003
+      #- ServiceConfig__serviceName=productapi
+      #- ServiceConfig__serviceId=productapi
+      #- ASPNETCORE_URLS=https://+:443;http://+:80
+      #- ASPNETCORE_HTTPS_PORT=5003
+    ports:
+       - "8003:80"
+       #- "5003:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  csproject.auth:
+    container_name: "csproject.auth"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      #- ServiceConfig__serviceDiscoveryAddress=http://consul-server1:8500
+      #- ServiceConfig__serviceAddress=https://csproject.auth:8002
+      #- ServiceConfig__serviceName=auth
+      #- ServiceConfig__serviceId=auth
+      #- ASPNETCORE_URLS=https://+:443;http://+:80
+      #- ASPNETCORE_HTTPS_PORT=5002
+    ports:
+      - "8000:80"
+      #- "8002:80"
+      #- "5002:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  csproject.gateway.api:
+    container_name: "csproject.gateway.api"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      #- ASPNETCORE_URLS=https://+:443;http://+:80
+      #- ASPNETCORE_HTTPS_PORT=5001
+    depends_on:
+      - csproject.product.api
+      - csproject.auth
+    ports:
+      - "8010:80"
+     #- "8001:80"
+     #- "5001:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  #consul:
+  #  ports:
+  #  - "8500"
+
+  #consul-client:
+  # ports:
+  # - "8500"

@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  csproject.product.api:
+    restart: always
+    image: ${DOCKER_REGISTRY-}csprojectproductapi
+    build:
+      context: .
+      dockerfile: CSProject.Product.Api/Dockerfile
+    environment:
+      ConsulServer: "csproject.product.api"
+      
+  csproject.auth:
+    image: ${DOCKER_REGISTRY-}csprojectauth
+    build:
+      context: .
+      dockerfile: CSProject.Auth/Dockerfile
+      
+  csproject.gateway.api:
+    image: ${DOCKER_REGISTRY-}csprojectgatewayapi
+    build:
+      context: .
+      dockerfile: CSProject.Gateway.Api/Dockerfile
+
+  consul-server1:
+    image: consul:1.9.3
+    container_name: consul-server1
+    restart: always
+    volumes:
+     - ./consul/server1.json:/consul/config/server1.json:ro
+     - ./consul/certs/:/consul/config/certs/:ro
+    ports:
+      - '8500:8500'
+      - '8600:8600/tcp'
+      - '8600:8600/udp'
+    command: 'agent -bootstrap-expect=1'
+
+  consul-client:
+    image: consul:1.9.3
+    container_name: consul-client
+    restart: always
+    volumes:
+      - ./consul/client.json:/consul/config/client.json:ro
+      - ./consul/certs/consul-agent-ca.pem:/consul/config/certs/consul-agent-ca.pem:ro
+    command: 'agent'

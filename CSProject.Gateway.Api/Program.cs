@@ -18,7 +18,7 @@ namespace CSProject.Gateway.Api
            {
                config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
                config.AddJsonFile("appsettings.json");
-               config.AddJsonFile("ocelot.json", false, true);
+               //config.AddJsonFile("ocelot.json", false, true);
                config.AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true);
                config.AddEnvironmentVariables();
            })

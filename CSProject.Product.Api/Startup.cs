@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CSProject.Product.Api
@@ -27,13 +28,13 @@ namespace CSProject.Product.Api
         {
             _configuration = configuration;
 
-            RegisterServiceToConsul();
+            //RegisterServiceToConsul();
 
         }
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureServices(_configuration);
-            services.AddHealthChecks();
+            //services.AddHealthChecks();
             ConfigureConsul(services);
             services.AddMvc();
         }
@@ -53,7 +54,7 @@ namespace CSProject.Product.Api
 
             app.UseAuthorization();
 
-            app.UseHealthChecks("", GetHealthCheckOptions());
+            //app.UseHealthChecks("", GetHealthCheckOptions());
 
             app.UseEndpoints(endpoints =>
             {
@@ -65,6 +66,11 @@ namespace CSProject.Product.Api
         {
             using (var client = new ConsulClient())
             {
+
+                var server = _configuration["ConsulServer"] ?? "localhost";
+
+          
+
                 var registration = new AgentServiceRegistration()
                 {
                     ID = "productapi",
@@ -73,7 +79,7 @@ namespace CSProject.Product.Api
                     Port = 4003,
                     Check = new AgentCheckRegistration()
                     {
-                        HTTP = "http://localhost:4003",
+                        HTTP = $"http://localhost:4003",
                         Interval = TimeSpan.FromSeconds(10)
                     }
                 };
@@ -90,23 +96,23 @@ namespace CSProject.Product.Api
         }
 
 
-        private HealthCheckOptions GetHealthCheckOptions()
-        {
-            var options = new HealthCheckOptions();
-            options.ResponseWriter = async (c, r) =>
-            {
-                c.Response.ContentType = "application/json";
-                var result = JsonConvert.SerializeObject(new
-                {
-                    status = r.Status.ToString(),
-                    errors = r.Entries.Select(x => new { key = x.Key, value = x.Value.Status.ToString() }),
-                    durations = r.TotalDuration.TotalMilliseconds.ToString()
-                });
+        //private HealthCheckOptions GetHealthCheckOptions()
+        //{
+        //    var options = new HealthCheckOptions();
+        //    options.ResponseWriter = async (c, r) =>
+        //    {
+        //        c.Response.ContentType = "application/json";
+        //        var result = JsonConvert.SerializeObject(new
+        //        {
+        //            status = r.Status.ToString(),
+        //            errors = r.Entries.Select(x => new { key = x.Key, value = x.Value.Status.ToString() }),
+        //            durations = r.TotalDuration.TotalMilliseconds.ToString()
+        //        });
 
-                await c.Response.WriteAsync(result);
-            };
+        //        await c.Response.WriteAsync(result);
+        //    };
 
-            return options;
-        }
+        //    return options;
+        //}
     }
 }

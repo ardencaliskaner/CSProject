@@ -49,7 +49,7 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:4010",
+    "BaseUrl": "http://localhost:4001",
     "ServiceDiscoveryProvider": {
       "ID": "consul",
       "Host": "localhost",
