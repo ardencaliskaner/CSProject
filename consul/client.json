@@ -2,6 +2,6 @@
     "node_name": "consul-client",
     "data_dir": "/consul/data",
     "retry_join": [
-        "consul-server1"
+        "consul-server"
     ]
 }

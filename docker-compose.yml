@@ -22,24 +22,8 @@ services:
       context: .
       dockerfile: CSProject.Gateway.Api/Dockerfile
 
-  consul-server1:
+  consul-server:
     image: consul:1.9.3
-    container_name: consul-server1
-    restart: always
-    volumes:
-     - ./consul/server1.json:/consul/config/server1.json:ro
-     - ./consul/certs/:/consul/config/certs/:ro
-    ports:
-      - '8500:8500'
-      - '8600:8600/tcp'
-      - '8600:8600/udp'
-    command: 'agent -bootstrap-expect=1'
-
-  consul-client:
-    image: consul:1.9.3
-    container_name: consul-client
-    restart: always
-    volumes:
-      - ./consul/client.json:/consul/config/client.json:ro
-      - ./consul/certs/consul-agent-ca.pem:/consul/config/certs/consul-agent-ca.pem:ro
-    command: 'agent'
+   
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu

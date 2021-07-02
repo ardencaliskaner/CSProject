@@ -17,47 +17,50 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
-
   csproject.auth:
     container_name: "csproject.auth"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      #- ServiceConfig__serviceDiscoveryAddress=http://consul-server1:8500
-      #- ServiceConfig__serviceAddress=https://csproject.auth:8002
-      #- ServiceConfig__serviceName=auth
-      #- ServiceConfig__serviceId=auth
-      #- ASPNETCORE_URLS=https://+:443;http://+:80
-      #- ASPNETCORE_HTTPS_PORT=9002
     ports:
-      #- "8000:80"
       - "8002:80"
-      #- "9002:443"
+      - "9002:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
   csproject.product.api:
     container_name: "csproject.product.api"
+    restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ServiceConfig__serviceDiscoveryAddress=http://consul-server1:8500
+      - ServiceConfig__serviceDiscoveryAddress=http://consul-server:8500
       - ServiceConfig__serviceAddress=http://csproject.product.api:8003
-      #- ServiceConfig__serviceName=productapi
-      #- ServiceConfig__serviceId=productapi
-      #- ASPNETCORE_URLS=https://+:443;http://+:80
-      #- ASPNETCORE_HTTPS_PORT=9003
     ports:
-       #- "8003:80"
-       - "8003:80"
-       - "9003:443"
+      - "8003:80"
+      - "9003:443"
+    depends_on:
+      - ms-sql-server
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
-  #consul:
-  #  ports:
-  #  - "8500"
+  consul-server:
+    container_name: consul-server
+    restart: always
+    volumes:
+      - ./consul/server.json:/consul/config/server.json:ro
+      - ./consul/certs/:/consul/config/certs/:ro
+    ports:
+      - '8500:8500'
+      - '8600:8600/tcp'
+      - '8600:8600/udp'
+    command: 'agent -bootstrap-expect=1'
 
-  #consul-client:
-  # ports:
-  # - "8500"
+  ms-sql-server:
+    container_name: ms-sql-server
+    environment:
+      - SA_PASSWORD=Ardentest123
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"

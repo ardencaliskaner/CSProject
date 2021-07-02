@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="consul\client.json" />
-    <None Include="consul\server1.json" />
+    <None Include="consul\server.json" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

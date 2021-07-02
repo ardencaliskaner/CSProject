@@ -1,5 +1,5 @@
 {
-    "node_name": "consul-server1",
+    "node_name": "consul-server",
     "server": true,
     "ui_config": {
         "enabled": true
