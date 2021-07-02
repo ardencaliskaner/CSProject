@@ -1,26 +1,24 @@
 {
   "ReRoutes": [
     {
-      "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/api/token/GenerateToken/",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "csproject.auth",
-          "Port": "80"
+          "Host": "localhost",
+          "Port": "5002"
         }
       ],
       "UpstreamPathTemplate": "/api/token/GenerateToken/",
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
-      "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/api/product/",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "csproject.product.api",
-          "Port": "80"
+          "Host": "localhost",
+          "Port": "5003"
         }
       ],
       "UpstreamPathTemplate": "/api/product/",
@@ -37,7 +35,7 @@
     {
       "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "ServiceName": "productapi",
       "UpstreamPathTemplate": "/{url}",
       "UpstreamHttpMethod": [ "Get" ]
