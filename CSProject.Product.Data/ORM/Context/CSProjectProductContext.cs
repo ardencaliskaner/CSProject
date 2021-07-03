@@ -28,9 +28,6 @@ namespace CSProject.Product.Data.ORM.Context
             var database = "ProductDB";
 
             optionsBuilder.UseSqlServer($"Server={server},{port};Initial Catalog={database};User ID ={user};Password={password};MultipleActiveResultSets=true");
-
-
-            //optionsBuilder.UseSqlServer(@"Data Source=YOURLOCALDBNAME;Database=ArmutProjectDB;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
 
         public DbSet<Entity.Product> Product { get; set; }

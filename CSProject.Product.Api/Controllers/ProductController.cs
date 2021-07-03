@@ -19,7 +19,7 @@ namespace CSProject.Product.Api.Controllers
 
         public IActionResult GetProducts()
         {
-            var productId = _productService.GetByProductId("Pc");
+            var productId = _productService.GetAll();
 
             return Ok(productId);
         }

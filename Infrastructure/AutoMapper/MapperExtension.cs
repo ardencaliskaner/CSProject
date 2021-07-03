@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Infrastructure.AutoMapper
@@ -40,5 +42,6 @@ namespace Infrastructure.AutoMapper
             }
             return expression;
         }
+
     }
 }
