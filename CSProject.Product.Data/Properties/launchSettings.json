@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CSProject.Product.Data": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Key": "Value",
+        "ASPNETCORE_ENVIRONMENT": "Local"
+      }
+    }
+  }
+}

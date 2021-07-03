@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using Entity = CSProject.Product.Data.ORM.Model;
 
 namespace CSProject.Product.Data.ORM.Context
@@ -18,14 +19,9 @@ namespace CSProject.Product.Data.ORM.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //var server = Configuration["DBServer"] ?? "localhost";
-            //var port = Configuration["DBPort"] ?? "1433";
-            //var user = Configuration["DBUser"] ?? "SA";
-            //var password = Configuration["DBPassword"] ?? "Ardentest123";
-            //var database = Configuration["Database"] ?? "Colours";
+            bool isLocal = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Local";
 
-            //var server = "localhost";
-            var server = "ms-sql-server";
+            var server = isLocal ? "localhost" : "ms-sql-server";
             var port = "1433";
             var user = "SA";
             var password = "Ardentest123";
