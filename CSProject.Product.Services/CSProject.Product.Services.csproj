@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Base\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CSProject.Product.Data\CSProject.Product.Data.csproj" />
+  </ItemGroup>
+
+</Project>

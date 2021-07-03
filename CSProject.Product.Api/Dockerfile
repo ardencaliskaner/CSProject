@@ -8,6 +8,8 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["CSProject.Product.Api/CSProject.Product.Api.csproj", "CSProject.Product.Api/"]
 COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
+COPY ["CSProject.Product.Data/CSProject.Product.Data.csproj", "CSProject.Product.Data/"]
+COPY ["CSProject.Product.Services/CSProject.Product.Services.csproj", "CSProject.Product.Services/"]
 RUN dotnet restore "CSProject.Product.Api/CSProject.Product.Api.csproj"
 COPY . .
 WORKDIR "/src/CSProject.Product.Api"

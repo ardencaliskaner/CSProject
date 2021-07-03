@@ -35,6 +35,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ServiceConfig__serviceDiscoveryAddress=http://consul-server:8500
       - ServiceConfig__serviceAddress=http://csproject.product.api:8003
+      - DBServer=ms-sql-server
     ports:
       - "8003:80"
       - "9003:443"
