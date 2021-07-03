@@ -16,6 +16,7 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="wait-for-it.sh" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="consul\certs\consul-agent-ca.pem\" />

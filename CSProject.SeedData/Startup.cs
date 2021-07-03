@@ -42,7 +42,7 @@ namespace CSProject.Product.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            SeedData.Model.PrepDB.PrepPopulation(app);
+            PrepDB.PrepPopulation(app);
 
             //if (env.IsDevelopment())
             //{

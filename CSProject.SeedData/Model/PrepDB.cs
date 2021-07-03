@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using ProductEntity = CSProject.Product.Data.ORM.Model.Product;
 
@@ -13,21 +14,19 @@ namespace CSProject.SeedData.Model
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                SeedData(serviceScope.ServiceProvider.GetService<CSProjectProductContext>());
+                Retry.Do(() => SeedData(serviceScope.ServiceProvider.GetService<CSProjectProductContext>()), TimeSpan.FromSeconds(15));
             }
         }
 
         public static void SeedData(CSProjectProductContext context)
         {
-            System.Console.WriteLine("Applying Migrations...");
+            Console.WriteLine("Applying Migrations...");
 
             context.Database.Migrate();
 
-            var pr = context.Product;
-
             if (!context.Product.Any())
             {
-                System.Console.WriteLine("Adding data - seeding...");
+                Console.WriteLine("Adding data - seeding...");
 
                 context.Product.AddRange(
                     new ProductEntity() { Name = "Pc" },
@@ -39,7 +38,7 @@ namespace CSProject.SeedData.Model
             }
             else
             {
-                System.Console.WriteLine("Already have data - not seeding");
+                Console.WriteLine("Already have data - not seeding");
             }
         }
     }

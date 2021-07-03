@@ -25,6 +25,7 @@ services:
       - DBServer=ms-sql-server
     depends_on:
       - ms-sql-server
+    command: ["./wait-for-it.sh", "ms-sql-server:1433", "--", "dotnet", "CSProject.SeedData.dll"]
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -43,7 +44,7 @@ services:
 
   csproject.product.api:
     container_name: "csproject.product.api"
-    #restart: always
+    restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ServiceConfig__serviceDiscoveryAddress=http://consul-server:8500
@@ -52,8 +53,6 @@ services:
     ports:
       - "8003:80"
       - "9003:443"
-    #depends_on:
-    #  - ms-sql-server
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
