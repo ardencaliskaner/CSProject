@@ -1,10 +1,11 @@
-﻿using CSProject.Product.Data.Repository;
+﻿using CSProject.Product.Data.ORM.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using ProductEntity = CSProject.Product.Data.ORM.Model.Product;
 
-namespace CSProject.Product.Data.ORM.Context
+namespace CSProject.SeedData.Model
 {
     public static class PrepDB
     {
@@ -22,14 +23,16 @@ namespace CSProject.Product.Data.ORM.Context
 
             context.Database.Migrate();
 
+            var pr = context.Product;
+
             if (!context.Product.Any())
             {
                 System.Console.WriteLine("Adding data - seeding...");
 
                 context.Product.AddRange(
-                    new Model.Product() { Name = "Tv" },
-                    new Model.Product() { Name = "Phone" },
-                    new Model.Product() { Name = "Pc" }
+                    new ProductEntity() { Name = "Pc" },
+                    new ProductEntity() { Name = "Tv" },
+                    new ProductEntity() { Name = "Phone" }
                 );
 
                 context.SaveChanges();

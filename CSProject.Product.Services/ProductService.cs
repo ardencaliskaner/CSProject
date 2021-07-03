@@ -14,13 +14,6 @@ namespace CSProject.Product.Services
             _productRepository = productRepository;
         }
 
-
-        public void SeedData()
-        {
-            _productRepository.SeedData();
-        }
-
-
         public int GetByProductId(string productname)
         {
             var product = _productRepository.FirstOrDefault(x => x.Name == productname);

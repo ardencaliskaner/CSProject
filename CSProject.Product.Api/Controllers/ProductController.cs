@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CSProject.Product.Api.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {

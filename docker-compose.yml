@@ -1,6 +1,25 @@
 version: '3.4'
 
 services:
+  csproject.gateway.api:
+    image: ${DOCKER_REGISTRY-}csprojectgatewayapi
+    build:
+      context: .
+      dockerfile: CSProject.Gateway.Api/Dockerfile
+
+  csproject.seeddata:
+    restart: always
+    image: ${DOCKER_REGISTRY-}seeddata
+    build:
+      context: .
+      dockerfile: CSProject.SeedData/Dockerfile
+
+  csproject.auth:
+    image: ${DOCKER_REGISTRY-}csprojectauth
+    build:
+      context: .
+      dockerfile: CSProject.Auth/Dockerfile
+
   csproject.product.api:
     restart: always
     image: ${DOCKER_REGISTRY-}csprojectproductapi
@@ -9,18 +28,6 @@ services:
       dockerfile: CSProject.Product.Api/Dockerfile
     environment:
       ConsulServer: "csproject.product.api"
-      
-  csproject.auth:
-    image: ${DOCKER_REGISTRY-}csprojectauth
-    build:
-      context: .
-      dockerfile: CSProject.Auth/Dockerfile
-      
-  csproject.gateway.api:
-    image: ${DOCKER_REGISTRY-}csprojectgatewayapi
-    build:
-      context: .
-      dockerfile: CSProject.Gateway.Api/Dockerfile
 
   consul-server:
     image: consul:1.9.3

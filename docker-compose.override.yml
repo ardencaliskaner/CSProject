@@ -17,7 +17,20 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
+  csproject.seeddata:
+    restart: always
+    container_name: "csproject.seeddata"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DBServer=ms-sql-server
+    depends_on:
+      - ms-sql-server
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   csproject.auth:
+    restart: always
     container_name: "csproject.auth"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -30,7 +43,7 @@ services:
 
   csproject.product.api:
     container_name: "csproject.product.api"
-    restart: always
+    #restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ServiceConfig__serviceDiscoveryAddress=http://consul-server:8500
@@ -39,8 +52,8 @@ services:
     ports:
       - "8003:80"
       - "9003:443"
-    depends_on:
-      - ms-sql-server
+    #depends_on:
+    #  - ms-sql-server
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -65,3 +78,4 @@ services:
       - MSSQL_PID=Express
     ports:
       - "1433:1433"
+

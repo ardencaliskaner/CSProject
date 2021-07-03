@@ -2,6 +2,5 @@
 {
     public interface IProductRepository : IBaseRepository<ORM.Model.Product>
     {
-        void SeedData();
     }
 }

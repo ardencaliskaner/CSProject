@@ -7,21 +7,5 @@ namespace CSProject.Product.Data.Repository
 {
     public class ProductRepository : BaseRepository<ORM.Model.Product>, IProductRepository
     {
-        public void SeedData()
-        {
-            var context = new CSProjectProductContext();
-
-            context.Database.Migrate();
-
-            context.Product.AddRange(
-                new ORM.Model.Product() { Name = "Tv" },
-                new ORM.Model.Product() { Name = "Phone" },
-                new ORM.Model.Product() { Name = "Pc" }
-            );
-
-            context.SaveChanges();
-
-        }
-
     }
 }
