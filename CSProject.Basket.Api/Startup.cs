@@ -1,4 +1,5 @@
 using CSProject.Basket.Api.Extensions;
+using CSProject.Basket.Data.ORM.Context;
 using CSProject.Basket.Data.Repository;
 using CSProject.Basket.Data.Repository.Interfaces;
 using CSProject.Basket.Services;
@@ -6,6 +7,7 @@ using CSProject.Basket.Services.Interfaces;
 using Infrastructure.ServiceDiscovery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,6 +32,11 @@ namespace CSProject.Basket.Api
             ServiceDependency(services);
 
             services.AddMvc();
+
+            services.AddControllersWithViews()
+                   .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddDbContext<CSProjectBasketContext>(options => options.UseSqlServer(_configuration.GetConnectionString("BasketDB")));
 
         }
 
@@ -65,6 +72,8 @@ namespace CSProject.Basket.Api
 
         private void ServiceDependency(IServiceCollection services)
         {
+            AutoMapperConfiguration.Initialize();
+
             services
                 .AddTransient<IBasketRepository, BasketRepository>()
                 .AddTransient<IBasketProductRepository, BasketProductRepository>()

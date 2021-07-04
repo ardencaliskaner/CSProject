@@ -1,10 +1,11 @@
 ﻿using CSProject.Dto.DataDto;
-using CSProject.Dto.Model;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CSProject.Basket.Services.Interfaces
 {
-    public interface IBasketService : IBaseService<BasketDto, Data.ORM.Model.Basket>
+    public interface IBasketService
     {
-        bool AddBasket(int productId);
+        Task<List<BasketDto>> GetAll();
     }
 }

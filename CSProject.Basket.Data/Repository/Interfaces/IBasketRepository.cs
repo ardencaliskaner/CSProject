@@ -1,6 +1,10 @@
-﻿namespace CSProject.Basket.Data.Repository.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace CSProject.Basket.Data.Repository.Interfaces
 {
-    public interface IBasketRepository : IBaseRepository<ORM.Model.Basket>
+    public interface IBasketRepository
     {
+        Task<List<ORM.Model.Basket>> GetAll();
     }
 }

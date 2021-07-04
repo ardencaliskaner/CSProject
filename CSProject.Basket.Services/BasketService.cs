@@ -1,36 +1,28 @@
 ﻿using CSProject.Dto.DataDto;
 using CSProject.Basket.Data.Repository.Interfaces;
-using CSProject.Basket.Services.Base;
 using CSProject.Basket.Services.Interfaces;
-using CSProject.Dto.Model;
-using CSProject.Basket.Data.ORM.Model;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using AutoMapper;
 
 namespace CSProject.Basket.Services
 {
-    public class BasketService : BaseService<BasketDto, Data.ORM.Model.Basket>, IBasketService
+    public class BasketService : IBasketService
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IBasketProductRepository _basketProductRepository;
 
 
-        public BasketService(IBasketRepository basketRepository, IBasketProductRepository basketProductRepository) : base(basketRepository)
+        public BasketService(IBasketRepository basketRepository, IBasketProductRepository basketProductRepository)
         {
             _basketRepository = basketRepository;
             _basketProductRepository = basketProductRepository;
         }
 
-        public bool AddBasket(int productId)
+        public async Task<List<BasketDto>> GetAll()
         {
-            var entity = new BasketProduct
-            {
-                BasketId = 1,
-                ProductId = productId,
-                Quantity = 1
-            };
-
-            _basketProductRepository.Insert(entity);
-
-            return true;
+            var basketEntites = await _basketRepository.GetAll().ConfigureAwait(false);
+            return Mapper.Map<List<BasketDto>>(basketEntites);
         }
     }
 }
