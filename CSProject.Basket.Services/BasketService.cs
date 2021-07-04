@@ -4,6 +4,7 @@ using CSProject.Basket.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using AutoMapper;
+using CSProject.Dto.DataDto.Request;
 
 namespace CSProject.Basket.Services
 {
@@ -24,5 +25,23 @@ namespace CSProject.Basket.Services
             var basketEntites = await _basketRepository.GetAll().ConfigureAwait(false);
             return Mapper.Map<List<BasketDto>>(basketEntites);
         }
+
+        public async Task<List<BasketDto>> AddToBasket(AddBasketRequest addBasketRequest)
+        {
+            var basketId = GetOrSetClientBasket(addBasketRequest.ClientId);
+
+
+
+
+            var basketEntites = await _basketRepository.GetAll().ConfigureAwait(false);
+            return Mapper.Map<List<BasketDto>>(basketEntites);
+        }
+
+
+        private async Task<int> GetOrSetClientBasket(int clientId)
+        {
+            return 1;
+        }
+
     }
 }
