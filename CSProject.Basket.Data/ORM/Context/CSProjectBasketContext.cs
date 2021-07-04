@@ -34,5 +34,11 @@ namespace CSProject.Basket.Data.ORM.Context
 
         public DbSet<Entity.BasketProduct> BasketProduct { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Entity.Basket>()
+                .HasIndex(p => new { p.Id, p.ClientId }).IsUnique();
+        }
+
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSProject.Basket.Data.Migrations
 {
     [DbContext(typeof(CSProjectBasketContext))]
-    [Migration("20210703234521_BasketDB")]
+    [Migration("20210704012209_BasketDB")]
     partial class BasketDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,13 +23,16 @@ namespace CSProject.Basket.Data.Migrations
 
             modelBuilder.Entity("CSProject.Basket.Data.ORM.Model.Basket", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("AddDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
@@ -43,9 +46,48 @@ namespace CSProject.Basket.Data.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id", "ClientId")
+                        .IsUnique();
 
                     b.ToTable("Basket");
+                });
+
+            modelBuilder.Entity("CSProject.Basket.Data.ORM.Model.BasketProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("BasketId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BasketProduct");
                 });
 #pragma warning restore 612, 618
         }
