@@ -1,0 +1,19 @@
+{
+	"id": "3a09dad8-b1f7-4525-9efb-1e6b9f2849e9",
+	"name": "Architecture21-Local",
+	"values": [
+		{
+			"key": "url",
+			"value": "https://localhost:5001/api",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2021-07-04T21:15:09.136Z",
+	"_postman_exported_using": "Postman/8.7.0"
+}
