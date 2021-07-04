@@ -1,6 +1,8 @@
 ﻿using CSProject.Product.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CSProject.Product.Api.Controllers
 {
@@ -15,10 +17,10 @@ namespace CSProject.Product.Api.Controllers
             _productService = productService;
         }
 
-        [HttpGet("GetProducts")]
-        public IActionResult GetProducts()
+        [HttpGet("GetAll")]
+        public async Task<List<Dto.DataDto.ProductDto>> GetAll()
         {
-            return Ok("");
+            return await _productService.GetAll();
         }
 
 

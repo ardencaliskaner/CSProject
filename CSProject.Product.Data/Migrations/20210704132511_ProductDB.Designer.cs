@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSProject.Product.Data.Migrations
 {
     [DbContext(typeof(CSProjectProductContext))]
-    [Migration("20210704123244_ProductDB")]
+    [Migration("20210704132511_ProductDB")]
     partial class ProductDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

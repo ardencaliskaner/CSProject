@@ -31,6 +31,8 @@ namespace CSProject.Product.Api
             ServiceDependency(services);
 
             services.AddMvc();
+            services.AddControllersWithViews()
+                    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContext<CSProjectProductContext>(options => options.UseSqlServer(_configuration.GetConnectionString("ProductDB")));
 

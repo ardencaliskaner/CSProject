@@ -16,6 +16,15 @@ namespace CSProject.Product.Data.Repository
             _context = context;
         }
 
+        public async Task<List<ORM.Model.Product>> GetAll()
+        {
+            var carObject = await _context.Product
+                .Where(x => x.IsActive && !x.IsDeleted)
+                .ToListAsync().ConfigureAwait(false);
+
+            return carObject;
+        }
+
 
         public async Task<object> GetAllWithCategories()
         {
