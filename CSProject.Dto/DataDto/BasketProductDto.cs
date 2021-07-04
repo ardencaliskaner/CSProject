@@ -2,7 +2,7 @@
 
 namespace CSProject.Dto.DataDto
 {
-    class BasketProductDto : BaseDto
+    public class BasketProductDto : BaseDto
     {
         public int BasketId { get; set; }
 

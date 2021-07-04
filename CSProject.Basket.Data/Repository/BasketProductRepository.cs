@@ -2,6 +2,7 @@
 using CSProject.Basket.Data.ORM.Model;
 using CSProject.Basket.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,25 @@ namespace CSProject.Basket.Data.Repository
         public BasketProductRepository(CSProjectBasketContext context)
         {
             _context = context;
+        }
+
+        public async Task<BasketProduct> AddBasketProduct(int basketId, int productId, int quantity)
+        {
+            var basketProduct = new ORM.Model.BasketProduct
+            {
+                BasketId = basketId,
+                ProductId = productId,
+                Quantity = quantity,
+                IsActive = true,
+                IsDeleted = false,
+                AddDate = DateTime.Now,
+                UpdateDate = DateTime.Now,
+            };
+
+            await _context.BasketProduct.AddAsync(basketProduct).ConfigureAwait(false);
+            await _context.SaveChangesAsync();
+
+            return basketProduct;
         }
 
         public async Task<List<BasketProduct>> GetAll()

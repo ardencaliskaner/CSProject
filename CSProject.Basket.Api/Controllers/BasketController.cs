@@ -1,4 +1,6 @@
 ﻿using CSProject.Basket.Services.Interfaces;
+using CSProject.Dto.ApiModel.Response;
+using CSProject.Dto.DataDto.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -24,12 +26,10 @@ namespace CSProject.Basket.Api.Controllers
             return await _basketService.GetAll();
         }
 
-        //[HttpGet("AddBasket/{productId}")]
-        //public IActionResult AddBasket(int productId)
-        //{
-        //    var basketId = _basketService.AddBasket(productId);
-
-        //    return Ok(basketId);
-        //}
+        [HttpPost("AddToBasket")]
+        public async Task<ClientBasketResponseModel> AddToBasket([FromBody] AddBasketRequest addBasketRequest)
+        {
+            return await _basketService.AddToBasket(addBasketRequest);
+        }
     }
 }

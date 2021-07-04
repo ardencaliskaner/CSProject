@@ -11,8 +11,8 @@ namespace CSProject.Product.Api
             Mapper.Initialize((cfg) =>
             {
                 cfg.CreateMap<ProductDto, Data.ORM.Model.Product>();
+                cfg.CreateMap<Data.ORM.Model.Product, ProductDto>();
                 cfg.CreateMap<CategoryDto, Category>();
-                cfg.CreateMap<ProductDto, ProductVM>();
             });
         }
     }

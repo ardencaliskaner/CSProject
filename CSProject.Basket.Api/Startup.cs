@@ -3,6 +3,8 @@ using CSProject.Basket.Data.ORM.Context;
 using CSProject.Basket.Data.Repository;
 using CSProject.Basket.Data.Repository.Interfaces;
 using CSProject.Basket.Services;
+using CSProject.Basket.Services.ApiService;
+using CSProject.Basket.Services.ApiService.Contracts;
 using CSProject.Basket.Services.Interfaces;
 using Infrastructure.ServiceDiscovery;
 using Microsoft.AspNetCore.Builder;
@@ -77,7 +79,8 @@ namespace CSProject.Basket.Api
             services
                 .AddTransient<IBasketRepository, BasketRepository>()
                 .AddTransient<IBasketProductRepository, BasketProductRepository>()
-                .AddTransient<IBasketService, BasketService>();
+                .AddTransient<IBasketService, BasketService>()
+                .AddTransient<IProductApiService, ProductApiService>();
         }
 
     }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
+using CSProject.Dto.ApiModel.Request;
+using CSProject.Dto.ApiModel.Response;
 using CSProject.Dto.DataDto;
 using CSProject.Product.Data.Repository.Interfaces;
 using CSProject.Product.Services.Interfaces;
@@ -21,6 +23,8 @@ namespace CSProject.Product.Services
         }
 
 
+
+
         public async Task<List<ProductDto>> GetAll()
         {
             var productEntities = await _productRepository.GetAll().ConfigureAwait(false);
@@ -33,6 +37,19 @@ namespace CSProject.Product.Services
             var mapped = Mapper.Map<List<ProductDto>>(productEntities);
 
             return mapped;
+        }
+
+        public async Task<ProductDto> GetProduct(ProductStockRequestModel productStockRequestModel)
+        {
+            var productEntity = await _productRepository.GetProduct(productStockRequestModel.ProductId).ConfigureAwait(false);
+
+            return Mapper.Map<ProductDto>(productEntity);
+        }
+
+        public async Task<List<ProductResponseModel>> GetProductsWithId(List<ProductRequestModel> productRequestModels)
+        {
+            var productIds = productRequestModels.Select(x => x.Id).ToList();
+            return await _productRepository.GetProductsWithId(productIds).ConfigureAwait(false);
         }
     }
 }

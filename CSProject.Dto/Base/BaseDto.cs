@@ -4,7 +4,7 @@ namespace CSProject.Dto.Base
 {
     public class BaseDto
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public bool IsActive { get; set; }
 

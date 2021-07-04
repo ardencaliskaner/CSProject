@@ -19,4 +19,8 @@
     <Folder Include="Repository\Base\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CSProject.Dto\CSProject.Dto.csproj" />
+  </ItemGroup>
+
 </Project>

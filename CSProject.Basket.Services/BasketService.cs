@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using AutoMapper;
 using CSProject.Dto.DataDto.Request;
+using CSProject.Dto.ApiModel.Response;
+using CSProject.Dto.ApiModel.Request;
+using CSProject.Basket.Services.ApiService.Contracts;
 
 namespace CSProject.Basket.Services
 {
@@ -12,12 +15,14 @@ namespace CSProject.Basket.Services
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IBasketProductRepository _basketProductRepository;
+        private readonly IProductApiService _productApiService;
 
 
-        public BasketService(IBasketRepository basketRepository, IBasketProductRepository basketProductRepository)
+        public BasketService(IBasketRepository basketRepository, IBasketProductRepository basketProductRepository, IProductApiService productApiService)
         {
             _basketRepository = basketRepository;
             _basketProductRepository = basketProductRepository;
+            _productApiService = productApiService;
         }
 
         public async Task<List<BasketDto>> GetAll()
@@ -26,21 +31,99 @@ namespace CSProject.Basket.Services
             return Mapper.Map<List<BasketDto>>(basketEntites);
         }
 
-        public async Task<List<BasketDto>> AddToBasket(AddBasketRequest addBasketRequest)
+        public async Task<ClientBasketResponseModel> AddToBasket(AddBasketRequest addBasketRequest)
         {
-            var basketId = GetOrSetClientBasket(addBasketRequest.ClientId);
+            var product = await CheckProductStock(addBasketRequest.ProductId, addBasketRequest.Quantity);
+
+            var basket = await GetOrSetClientBasket(addBasketRequest.ClientId);
+
+            //Check Client Basket Product
+
+            var basketProduct = await AddProductToBasket(product.Id, product.Id, addBasketRequest.Quantity);
 
 
+            var clientBasketResponseModel = new ClientBasketResponseModel
+            {
+                ClientId = basket.ClientId,
+                BasketId = basket.Id,
+                Products = new List<ProductResponseModel>()
+            };
 
 
-            var basketEntites = await _basketRepository.GetAll().ConfigureAwait(false);
-            return Mapper.Map<List<BasketDto>>(basketEntites);
+            return clientBasketResponseModel;
         }
 
 
-        private async Task<int> GetOrSetClientBasket(int clientId)
+        private async Task<BasketDto> GetOrSetClientBasket(int clientId)
         {
-            return 1;
+            var basketEntity = await _basketRepository.CheckClientBasket(clientId);
+
+            if (basketEntity != null)
+            {
+                return Mapper.Map<BasketDto>(basketEntity);
+            }
+
+            basketEntity = await _basketRepository.CreateBasket(clientId);
+
+            return Mapper.Map<BasketDto>(basketEntity);
+
+        }
+
+        private async Task<ProductDto> CheckProductStock(int productId, int quantity)
+        {
+            var productStockRequestModel = new ProductStockRequestModel { ProductId = productId };
+
+            ApiResponse<ProductStockResponseModel> apiResponse = await _productApiService.GetProductStock(productStockRequestModel);
+
+            if (apiResponse.Data != null)
+            {
+                var product = Mapper.Map<ProductDto>(apiResponse.Data);
+
+                if (product.Stock >= quantity)
+                {
+                    return product;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private async Task<ProductDto> GetClientBasketProducts(int productId, int quantity)
+        {
+            var productStockRequestModel = new ProductStockRequestModel { ProductId = productId };
+
+            ApiResponse<ProductStockResponseModel> apiResponse = await _productApiService.GetProductStock(productStockRequestModel);
+
+            if (apiResponse.Data != null)
+            {
+                var product = Mapper.Map<ProductDto>(apiResponse.Data);
+
+                if (product.Stock >= quantity)
+                {
+                    return product;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private async Task<BasketProductDto> AddProductToBasket(int basketId, int productId, int quantity)
+        {
+            var basketProductEntity = await _basketProductRepository.AddBasketProduct(basketId, productId, quantity).ConfigureAwait(false);
+
+            return Mapper.Map<BasketProductDto>(basketProductEntity);
         }
 
     }
