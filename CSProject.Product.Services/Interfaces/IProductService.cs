@@ -1,8 +1,9 @@
-﻿using CSProject.Dto.DataDto;
+﻿using System.Threading.Tasks;
 
 namespace CSProject.Product.Services.Interfaces
 {
-    public interface IProductService : IBaseService<ProductDto, Data.ORM.Model.Product>
+    public interface IProductService
     {
+        Task<object> GetAllWithCategories();
     }
 }

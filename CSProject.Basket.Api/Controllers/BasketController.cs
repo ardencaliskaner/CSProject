@@ -17,9 +17,18 @@ namespace CSProject.Basket.Api.Controllers
         }
 
 
+        [HttpGet("GetBaskets")]
         public IActionResult GetBaskets()
         {
             var basketId = _basketService.GetAll();
+
+            return Ok(basketId);
+        }
+
+        [HttpGet("AddBasket/{productId}")]
+        public IActionResult AddBasket(int productId)
+        {
+            var basketId = _basketService.AddBasket(productId);
 
             return Ok(basketId);
         }

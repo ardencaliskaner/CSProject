@@ -7,7 +7,7 @@ namespace CSProject.Product.Data.ORM.Model
     public class BaseEntity
     {
         [Key, Column(Order = 0)]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public bool IsActive { get; set; }
 

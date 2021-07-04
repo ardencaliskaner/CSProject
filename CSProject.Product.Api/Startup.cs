@@ -1,4 +1,5 @@
 using CSProject.Product.Api.Extensions;
+using CSProject.Product.Data.ORM.Context;
 using CSProject.Product.Data.Repository;
 using CSProject.Product.Data.Repository.Interfaces;
 using CSProject.Product.Services;
@@ -6,6 +7,7 @@ using CSProject.Product.Services.Interfaces;
 using Infrastructure.ServiceDiscovery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,9 +21,8 @@ namespace CSProject.Product.Api
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
-
-
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureServices(_configuration);
@@ -30,6 +31,8 @@ namespace CSProject.Product.Api
             ServiceDependency(services);
 
             services.AddMvc();
+
+            services.AddDbContext<CSProjectProductContext>(options => options.UseSqlServer(_configuration.GetConnectionString("ProductDB")));
 
         }
 

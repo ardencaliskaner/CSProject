@@ -1,7 +1,6 @@
 ﻿using CSProject.Product.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace CSProject.Product.Api.Controllers
 {
@@ -16,12 +15,19 @@ namespace CSProject.Product.Api.Controllers
             _productService = productService;
         }
 
-
+        [HttpGet("GetProducts")]
         public IActionResult GetProducts()
         {
-            var productId = _productService.GetAll();
+            return Ok("");
+        }
 
-            return Ok(productId);
+
+        [HttpGet("GetAllWithCategories")]
+        public IActionResult GetAllWithCategories()
+        {
+            var products = _productService.GetAllWithCategories();
+
+            return Ok(products);
         }
     }
 }

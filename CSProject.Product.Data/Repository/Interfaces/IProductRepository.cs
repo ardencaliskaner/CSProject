@@ -1,6 +1,9 @@
-﻿namespace CSProject.Product.Data.Repository.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace CSProject.Product.Data.Repository.Interfaces
 {
-    public interface IProductRepository : IBaseRepository<ORM.Model.Product>
+    public interface IProductRepository
     {
+        Task<object> GetAllWithCategories();
     }
 }

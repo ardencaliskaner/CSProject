@@ -48,159 +48,42 @@ namespace CSProject.Basket.Services.Base
             _baseRepository.SaveChanges();
         }
 
-        public virtual DtoResponseModel GetById(int Id)
+        public virtual TDto GetById(int Id)
         {
-            DtoResponseModel dtoResponseModel = new DtoResponseModel();
-
-            try
-            {
-                var result = _baseRepository.FirstOrDefault(x => x.Id == Id);
-                if (result != null)
-                {
-                    TDto model = AutoMapper.Mapper.Map<TDto>(result);
-
-                    dtoResponseModel.IsSuccess = true;
-                    dtoResponseModel.Message = Message.Success;
-                    dtoResponseModel.Data = model;
-
-                    return dtoResponseModel;
-                }
-                else
-                {
-                    dtoResponseModel.IsSuccess = false;
-                    dtoResponseModel.Message = Message.NoItem;
-
-                    return dtoResponseModel;
-                }
-            }
-            catch (Exception ex)
-            {
-                dtoResponseModel.IsSuccess = false;
-                dtoResponseModel.Message = Message.Error;
-
-                return dtoResponseModel;
-            }
+            var result = _baseRepository.FirstOrDefault(x => x.Id == Id);
+            TDto model = AutoMapper.Mapper.Map<TDto>(result);
+            return model;
         }
 
-        public virtual DtoResponseModel GetAll()
+        public virtual List<TDto> GetAll()
         {
-            DtoResponseModel dtoResponseModel = new DtoResponseModel();
-
-            try
-            {
-                var result = _baseRepository.GetAll();
-                List<TDto> modelList = AutoMapper.Mapper.Map<List<TDto>>(result);
-
-                dtoResponseModel.IsSuccess = true;
-                dtoResponseModel.Message = Message.Success;
-                dtoResponseModel.Data = modelList;
-
-                return dtoResponseModel;
-            }
-            catch (Exception ex)
-            {
-                dtoResponseModel.IsSuccess = false;
-                dtoResponseModel.Message = Message.Error;
-
-                return dtoResponseModel;
-            }
+            var result = _baseRepository.GetAll();
+            List<TDto> modelList = AutoMapper.Mapper.Map<List<TDto>>(result);
+            return modelList;
         }
 
-        public virtual DtoResponseModel Insert(TDto model)
+        public virtual TDto Insert(TDto model)
         {
-            DtoResponseModel dtoResponseModel = new DtoResponseModel();
-            try
-            {
-                if (model != null)
-                {
-                    var entity = AutoMapper.Mapper.Map<TEntity>(model);
-                    var result = _baseRepository.Insert(entity);
-                    model = AutoMapper.Mapper.Map<TDto>(result);
 
-                    dtoResponseModel.IsSuccess = true;
-                    dtoResponseModel.Message = Message.Success;
-                    dtoResponseModel.Data = model;
+            var entity = AutoMapper.Mapper.Map<TEntity>(model);
+            var result = _baseRepository.Insert(entity);
+            model = AutoMapper.Mapper.Map<TDto>(result);
 
-                    return dtoResponseModel;
-                }
-                else
-                {
-                    dtoResponseModel.IsSuccess = false;
-                    dtoResponseModel.Message = Message.Empty;
-
-                    return dtoResponseModel;
-                }
-            }
-            catch (Exception ex)
-            {
-                dtoResponseModel.IsSuccess = false;
-                dtoResponseModel.Message = Message.Error;
-
-                return dtoResponseModel;
-            }
+            return model;
         }
 
-        public virtual DtoResponseModel Update(TDto model)
+        public virtual TDto Update(TDto model)
         {
-            DtoResponseModel dtoResponseModel = new DtoResponseModel();
-            try
-            {
-                if (model != null)
-                {
-                    var entity = AutoMapper.Mapper.Map<TEntity>(model);
-                    var result = _baseRepository.Update(entity);
-                    model = AutoMapper.Mapper.Map<TDto>(result);
-
-                    dtoResponseModel.IsSuccess = true;
-                    dtoResponseModel.Message = Message.Success;
-                    dtoResponseModel.Data = model;
-
-                    return dtoResponseModel;
-                }
-                else
-                {
-                    dtoResponseModel.IsSuccess = false;
-                    dtoResponseModel.Message = Message.Empty;
-
-                    return dtoResponseModel;
-                }
-            }
-            catch (Exception ex)
-            {
-                dtoResponseModel.IsSuccess = false;
-                dtoResponseModel.Message = Message.Error;
-
-                return dtoResponseModel;
-            }
+            var entity = AutoMapper.Mapper.Map<TEntity>(model);
+            var result = _baseRepository.Update(entity);
+            model = AutoMapper.Mapper.Map<TDto>(result);
+            return model;
         }
 
-        public virtual DtoResponseModel Delete(int? Id)
+        public virtual bool Delete(int? id)
         {
-            DtoResponseModel dtoResponseModel = new DtoResponseModel();
-            try
-            {
-                if (Id != null)
-                {
-                    dtoResponseModel.IsSuccess = _baseRepository.Delete(Id); ;
-                    dtoResponseModel.Message = _baseRepository.Delete(Id) ? Message.Success : Message.Error;
-
-                    return dtoResponseModel;
-                }
-                else
-                {
-                    dtoResponseModel.IsSuccess = false;
-                    dtoResponseModel.Message = Message.Empty;
-
-                    return dtoResponseModel;
-                }
-            }
-            catch (Exception ex)
-            {
-                dtoResponseModel.IsSuccess = false;
-                dtoResponseModel.Message = Message.Empty;
-
-                return dtoResponseModel;
-            }
+            return _baseRepository.Delete(id);
         }
     }
 }
+

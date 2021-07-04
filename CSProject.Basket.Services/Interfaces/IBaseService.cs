@@ -1,9 +1,7 @@
 ﻿using CSProject.Dto.Base;
 using CSProject.Dto.Model;
 using CSProject.Basket.Data.ORM.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace CSProject.Basket.Services.Interfaces
 {
@@ -12,10 +10,10 @@ namespace CSProject.Basket.Services.Interfaces
         where TEntity : BaseEntity
     {
         void SaveChanges();
-        DtoResponseModel GetById(int Id);
-        DtoResponseModel GetAll();
-        DtoResponseModel Insert(TDto entity);
-        DtoResponseModel Update(TDto entity);
-        DtoResponseModel Delete(int? Id);
+        TDto GetById(int id);
+        List<TDto> GetAll();
+        TDto Insert(TDto entity);
+        TDto Update(TDto entity);
+        bool Delete(int? id);
     }
 }

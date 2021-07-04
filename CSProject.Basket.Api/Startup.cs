@@ -67,6 +67,7 @@ namespace CSProject.Basket.Api
         {
             services
                 .AddTransient<IBasketRepository, BasketRepository>()
+                .AddTransient<IBasketProductRepository, BasketProductRepository>()
                 .AddTransient<IBasketService, BasketService>();
         }
 
