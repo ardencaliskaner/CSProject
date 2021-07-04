@@ -1,15 +1,11 @@
+using CSProject.Basket.Data.ORM.Context;
 using CSProject.Product.Data.ORM.Context;
-using CSProject.Product.Data.Repository;
-using CSProject.Product.Data.Repository.Interfaces;
-using CSProject.Product.Services;
-using CSProject.Product.Services.Interfaces;
 using CSProject.SeedData.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace CSProject.Product.Api
 {
@@ -35,30 +31,36 @@ namespace CSProject.Product.Api
                 options.UseSqlServer($"Server={server},{port};Initial Catalog={database};User ID ={user};Password={password};MultipleActiveResultSets=true"));
 
 
-            services.AddMvc();
+            ConfigureDBToService<CSProjectProductContext>(
+                services,
+                _configuration["DBServer"] ?? "localhost",
+                _configuration["DBPort"] ?? "1433",
+                _configuration["DBUser"] ?? "SA",
+                _configuration["DBPassword"] ?? "Ardentest123",
+                _configuration["Database"] ?? "ProductDB");
 
+            ConfigureDBToService<CSProjectBasketContext>(
+                services,
+                _configuration["DBServer"] ?? "localhost",
+                _configuration["DBPort"] ?? "1433",
+                _configuration["DBUser"] ?? "SA",
+                _configuration["DBPassword"] ?? "Ardentest123",
+                _configuration["Database"] ?? "BasketDB");
+
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             PrepDB.PrepPopulation(app);
+        }
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
 
-            //app.UseHttpsRedirection();
-
-            //app.UseRouting();
-
-            //app.UseAuthorization();
-
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
+        private void ConfigureDBToService<TContext>(IServiceCollection services, string server, string port, string user, string password, string database)
+        where TContext : DbContext
+        {
+            services.AddDbContext<TContext>(options =>
+                options.UseSqlServer($"Server={server},{port};Initial Catalog={database};User ID ={user};Password={password};MultipleActiveResultSets=true"));
         }
     }
 }

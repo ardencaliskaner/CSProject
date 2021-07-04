@@ -1,6 +1,9 @@
 {
   "ReRoutes": [
+
+    //Auth
     {
+      "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/api/token/GenerateToken/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -12,7 +15,10 @@
       "UpstreamPathTemplate": "/api/token/GenerateToken/",
       "UpstreamHttpMethod": [ "Post" ]
     },
+
+    //Product
     {
+      "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/api/product/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -35,11 +41,42 @@
     {
       "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "ServiceName": "productapi",
       "UpstreamPathTemplate": "/{url}",
       "UpstreamHttpMethod": [ "Get" ]
-    }
+    },
+
+    //Basket
+    {
+      "UseServiceDiscovery": true,
+      "DownstreamPathTemplate": "/api/basket/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "csproject.basket.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/basket/",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "Username": "Claims[Username] > value",
+        "JobTitle": "Claims[JobTitle] > value"
+      }
+    },
+    //{
+    //  "UseServiceDiscovery": true,
+    //  "DownstreamPathTemplate": "/{url}",
+    //  "DownstreamScheme": "http",
+    //  "ServiceName": "basketapi",
+    //  "UpstreamPathTemplate": "/{url}",
+    //  "UpstreamHttpMethod": [ "Get" ]
+    //}
   ],
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {

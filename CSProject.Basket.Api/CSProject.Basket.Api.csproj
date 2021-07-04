@@ -2,12 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>c2103d4e-ad44-49a4-a003-963f92fff420</UserSecretsId>
+    <UserSecretsId>cd3ffca6-d29f-4c2c-96c2-9be8f1e8cea9</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
-
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
@@ -16,15 +14,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Consul" Version="1.6.1.1" />
   </ItemGroup>
-
 
   <ItemGroup>
     <ProjectReference Include="..\CSProject.Basket.Data\CSProject.Basket.Data.csproj" />
     <ProjectReference Include="..\CSProject.Basket.Services\CSProject.Basket.Services.csproj" />
-    <ProjectReference Include="..\CSProject.Product.Data\CSProject.Product.Data.csproj" />
-    <ProjectReference Include="..\CSProject.Product.Services\CSProject.Product.Services.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
-
 </Project>

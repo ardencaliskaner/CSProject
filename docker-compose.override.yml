@@ -57,6 +57,21 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
+  csproject.basket.api:
+    container_name: "csproject.basket.api"
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ServiceConfig__serviceDiscoveryAddress=http://consul-server:8500
+      - ServiceConfig__serviceAddress=http://csproject.basket.api:8004
+      - DBServer=ms-sql-server
+    ports:
+      - "8004:80"
+      - "9004:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   consul-server:
     container_name: consul-server
     restart: always
@@ -77,4 +92,3 @@ services:
       - MSSQL_PID=Express
     ports:
       - "1433:1433"
-
