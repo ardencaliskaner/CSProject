@@ -12,6 +12,6 @@ namespace CSProject.Product.Services.Interfaces
 
         Task<List<ProductResponseModel>> GetProductsWithId(List<ProductRequestModel> productRequestModels);
         Task<List<ProductDto>> GetAllWithCategories();
-        Task<ProductDto> GetProduct(ProductStockRequestModel productStockRequestModel);
+        Task<ProductStockResponseModel> GetProduct(ProductStockRequestModel productStockRequestModel);
     }
 }

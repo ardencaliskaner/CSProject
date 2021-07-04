@@ -2,6 +2,7 @@
 using CSProject.Dto.ApiModel.Request;
 using CSProject.Dto.ApiModel.Response;
 using CSProject.Dto.Validator;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ValidationResult = FluentValidation.Results.ValidationResult;
@@ -10,6 +11,25 @@ namespace CSProject.Basket.Services.ApiService
 {
     public class ProductApiService : IProductApiService
     {
+        public async Task<ApiResponse<List<ProductResponseModel>>> GetClientBasketProducts(List<ProductRequestModel> productRequestModels)
+        {
+
+            if (!productRequestModels.Any())
+            {
+                return new ApiResponse<List<ProductResponseModel>>
+                {
+                    Status = "false",
+                    Message = "Sepette ürün bulunamadı",
+                };
+            }
+
+            BaseApiService<List<ProductRequestModel>, List<ProductResponseModel>> baseApiService = new BaseApiService<List<ProductRequestModel>, List<ProductResponseModel>>();
+
+            ApiResponse<List<ProductResponseModel>> baseResponse = await baseApiService.GetDataFromApi(productRequestModels, "api/Product/GetProducts");
+
+            return baseResponse;
+        }
+
         public async Task<ApiResponse<ProductStockResponseModel>> GetProductStock(ProductStockRequestModel productStockRequestModel)
         {
             var validator = new RequestValidator();

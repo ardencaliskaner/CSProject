@@ -37,6 +37,16 @@ namespace CSProject.Basket.Data.Repository
             return basketProduct;
         }
 
+        public async Task<List<int>> GetBasketProductIds(int basketId)
+        {
+            var productIds = await _context.BasketProduct
+                .Where(x => x.BasketId == basketId)
+                .Select(s => s.ProductId)
+                .ToListAsync().ConfigureAwait(false);
+
+            return productIds;
+        }
+
         public async Task<List<BasketProduct>> GetAll()
         {
             var basketProducts = await _context.BasketProduct

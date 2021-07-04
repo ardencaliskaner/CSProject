@@ -50,6 +50,7 @@ namespace CSProject.Product.Data.Repository
                     Category = cr
                 }).Select(s => new ProductResponseModel
                 {
+                    ProductId = s.Product.Id,
                     CategoryId = s.Product.CategoryId,
                     CategoryName = s.Category.Name,
                     Name = s.Product.Name,
@@ -75,6 +76,7 @@ namespace CSProject.Product.Data.Repository
                  Category = cr
              }).Select(s => new ProductResponseModel
              {
+                 ProductId = s.Product.Id,
                  CategoryId = s.Product.CategoryId,
                  CategoryName = s.Category.Name,
                  Name = s.Product.Name,

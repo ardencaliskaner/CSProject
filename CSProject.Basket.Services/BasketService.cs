@@ -8,6 +8,7 @@ using CSProject.Dto.DataDto.Request;
 using CSProject.Dto.ApiModel.Response;
 using CSProject.Dto.ApiModel.Request;
 using CSProject.Basket.Services.ApiService.Contracts;
+using System.Linq;
 
 namespace CSProject.Basket.Services
 {
@@ -41,12 +42,20 @@ namespace CSProject.Basket.Services
 
             var basketProduct = await AddProductToBasket(product.Id, product.Id, addBasketRequest.Quantity);
 
+            var clientBasketProductIds = await _basketProductRepository.GetBasketProductIds(basket.Id);
+
+
+            List<ProductRequestModel> productRequestModels = clientBasketProductIds.Select(x => new ProductRequestModel
+            {
+                Id = x
+            }).ToList();
+
 
             var clientBasketResponseModel = new ClientBasketResponseModel
             {
                 ClientId = basket.ClientId,
                 BasketId = basket.Id,
-                Products = new List<ProductResponseModel>()
+                Products = await GetClientBasketProducts(productRequestModels)
             };
 
 
@@ -94,29 +103,11 @@ namespace CSProject.Basket.Services
             }
         }
 
-        private async Task<ProductDto> GetClientBasketProducts(int productId, int quantity)
+        private async Task<List<ProductResponseModel>> GetClientBasketProducts(List<ProductRequestModel> productRequestModels)
         {
-            var productStockRequestModel = new ProductStockRequestModel { ProductId = productId };
+            var apiResponse = await _productApiService.GetClientBasketProducts(productRequestModels);
 
-            ApiResponse<ProductStockResponseModel> apiResponse = await _productApiService.GetProductStock(productStockRequestModel);
-
-            if (apiResponse.Data != null)
-            {
-                var product = Mapper.Map<ProductDto>(apiResponse.Data);
-
-                if (product.Stock >= quantity)
-                {
-                    return product;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
+            return apiResponse.Data;
         }
 
         private async Task<BasketProductDto> AddProductToBasket(int basketId, int productId, int quantity)

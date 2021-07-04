@@ -16,6 +16,7 @@ namespace CSProject.Basket.Api
                 cfg.CreateMap<BasketProduct, BasketProductDto>();
                 cfg.CreateMap<BasketProductDto, BasketProduct>();
                 cfg.CreateMap<ProductDto, ProductStockResponseModel>();
+                cfg.CreateMap<ProductStockResponseModel, ProductDto>();
             });
         }
     }

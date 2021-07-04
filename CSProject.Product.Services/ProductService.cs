@@ -39,11 +39,11 @@ namespace CSProject.Product.Services
             return mapped;
         }
 
-        public async Task<ProductDto> GetProduct(ProductStockRequestModel productStockRequestModel)
+        public async Task<ProductStockResponseModel> GetProduct(ProductStockRequestModel productStockRequestModel)
         {
             var productEntity = await _productRepository.GetProduct(productStockRequestModel.ProductId).ConfigureAwait(false);
 
-            return Mapper.Map<ProductDto>(productEntity);
+            return Mapper.Map<ProductStockResponseModel>(productEntity);
         }
 
         public async Task<List<ProductResponseModel>> GetProductsWithId(List<ProductRequestModel> productRequestModels)

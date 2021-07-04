@@ -26,9 +26,14 @@ namespace CSProject.Product.Api.Controllers
         }
 
         [HttpPost("GetProducts")]
-        public async Task<List<ProductResponseModel>> GetProducts([FromBody] List<ProductRequestModel> productRequestModels)
+        public async Task<ApiResponse<List<ProductResponseModel>>> GetProducts([FromBody] List<ProductRequestModel> productRequestModels)
         {
-            return await _productService.GetProductsWithId(productRequestModels);
+            return new ApiResponse<List<ProductResponseModel>>()
+            {
+                Data = await _productService.GetProductsWithId(productRequestModels),
+                Message = "Success",
+                Status = "200"
+            };
         }
 
         [HttpGet("GetAllWithCategories")]
@@ -38,9 +43,14 @@ namespace CSProject.Product.Api.Controllers
         }
 
         [HttpPost("GetProductStock")]
-        public async Task<Dto.DataDto.ProductDto> GetProductStock([FromBody] ProductStockRequestModel productStockRequestModel)
+        public async Task<ApiResponse<ProductStockResponseModel>> GetProductStock([FromBody] ProductStockRequestModel productStockRequestModel)
         {
-            return await _productService.GetProduct(productStockRequestModel);
+            return new ApiResponse<ProductStockResponseModel>()
+            {
+                Data = await _productService.GetProduct(productStockRequestModel),
+                Message = "Success",
+                Status = "200"
+            };
         }
 
     }
