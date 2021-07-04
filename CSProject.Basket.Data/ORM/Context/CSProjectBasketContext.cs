@@ -32,5 +32,7 @@ namespace CSProject.Basket.Data.ORM.Context
 
         public DbSet<Entity.Basket> Basket { get; set; }
 
+        public DbSet<Entity.BasketProduct> BasketProduct { get; set; }
+
     }
 }

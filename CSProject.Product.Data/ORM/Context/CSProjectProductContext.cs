@@ -30,6 +30,8 @@ namespace CSProject.Product.Data.ORM.Context
             optionsBuilder.UseSqlServer($"Server={server},{port};Initial Catalog={database};User ID ={user};Password={password};MultipleActiveResultSets=true");
         }
 
+        public DbSet<Entity.Category> Category { get; set; }
+
         public DbSet<Entity.Product> Product { get; set; }
 
     }

@@ -4,5 +4,6 @@ namespace CSProject.Dto.DataDto
 {
     public class BasketDto : BaseDto
     {
+        public int ClientId { get; set; }
     }
 }

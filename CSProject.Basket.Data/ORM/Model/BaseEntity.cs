@@ -4,7 +4,7 @@ namespace CSProject.Basket.Data.ORM.Model
 {
     public class BaseEntity
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public bool IsActive { get; set; }
 

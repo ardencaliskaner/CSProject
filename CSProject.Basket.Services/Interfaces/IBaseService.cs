@@ -12,10 +12,10 @@ namespace CSProject.Basket.Services.Interfaces
         where TEntity : BaseEntity
     {
         void SaveChanges();
-        DtoResponseModel GetById(int id);
+        DtoResponseModel GetById(int Id);
         DtoResponseModel GetAll();
         DtoResponseModel Insert(TDto entity);
         DtoResponseModel Update(TDto entity);
-        DtoResponseModel Delete(int? id);
+        DtoResponseModel Delete(int? Id);
     }
 }

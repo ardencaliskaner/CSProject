@@ -54,7 +54,7 @@ namespace CSProject.Basket.Data.Repository.Base
         {
             if (entity != null)
             {
-                var _entity = dbcontext.Find(entity.ID);
+                var _entity = dbcontext.Find(entity.Id);
                 entity.AddDate = _entity.AddDate;
                 entity.UpdateDate = DateTime.Now;
                 entity.IsDeleted = _entity.IsDeleted;

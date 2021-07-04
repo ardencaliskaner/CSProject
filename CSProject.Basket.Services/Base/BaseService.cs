@@ -48,13 +48,13 @@ namespace CSProject.Basket.Services.Base
             _baseRepository.SaveChanges();
         }
 
-        public virtual DtoResponseModel GetById(int id)
+        public virtual DtoResponseModel GetById(int Id)
         {
             DtoResponseModel dtoResponseModel = new DtoResponseModel();
 
             try
             {
-                var result = _baseRepository.FirstOrDefault(x => x.ID == id);
+                var result = _baseRepository.FirstOrDefault(x => x.Id == Id);
                 if (result != null)
                 {
                     TDto model = AutoMapper.Mapper.Map<TDto>(result);
@@ -174,15 +174,15 @@ namespace CSProject.Basket.Services.Base
             }
         }
 
-        public virtual DtoResponseModel Delete(int? id)
+        public virtual DtoResponseModel Delete(int? Id)
         {
             DtoResponseModel dtoResponseModel = new DtoResponseModel();
             try
             {
-                if (id != null)
+                if (Id != null)
                 {
-                    dtoResponseModel.IsSuccess = _baseRepository.Delete(id); ;
-                    dtoResponseModel.Message = _baseRepository.Delete(id) ? Message.Success : Message.Error;
+                    dtoResponseModel.IsSuccess = _baseRepository.Delete(Id); ;
+                    dtoResponseModel.Message = _baseRepository.Delete(Id) ? Message.Success : Message.Error;
 
                     return dtoResponseModel;
                 }
