@@ -7,6 +7,6 @@ namespace CSProject.Product.Services.Interfaces
     public interface IProductService
     {
         Task<List<ProductDto>> GetAll();
-        Task<object> GetAllWithCategories();
+        Task<List<ProductDto>> GetAllWithCategories();
     }
 }

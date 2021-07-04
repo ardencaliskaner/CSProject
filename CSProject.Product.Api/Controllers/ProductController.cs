@@ -25,11 +25,9 @@ namespace CSProject.Product.Api.Controllers
 
 
         [HttpGet("GetAllWithCategories")]
-        public IActionResult GetAllWithCategories()
+        public async Task<List<Dto.DataDto.ProductDto>> GetAllWithCategories()
         {
-            var products = _productService.GetAllWithCategories();
-
-            return Ok(products);
+            return await _productService.GetAllWithCategories();
         }
     }
 }

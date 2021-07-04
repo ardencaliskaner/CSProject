@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSProject.Product.Data.ORM.Model
 {
-    public class Product : BaseEntity
+    public class ProductVM : BaseEntity
     {
         [Column(Order = 1)]
         public int CategoryId { get; set; }
@@ -17,5 +15,7 @@ namespace CSProject.Product.Data.ORM.Model
 
         [Column(Order = 4)]
         public decimal Price { get; set; }
+
+        public Category Category { get; set; }
     }
 }

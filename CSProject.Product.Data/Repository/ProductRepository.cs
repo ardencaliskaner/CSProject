@@ -1,4 +1,5 @@
 ﻿using CSProject.Product.Data.ORM.Context;
+using CSProject.Product.Data.ORM.Model;
 using CSProject.Product.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -18,33 +19,38 @@ namespace CSProject.Product.Data.Repository
 
         public async Task<List<ORM.Model.Product>> GetAll()
         {
-            var carObject = await _context.Product
+            var products = await _context.Product
                 .Where(x => x.IsActive && !x.IsDeleted)
                 .ToListAsync().ConfigureAwait(false);
 
-            return carObject;
+            return products;
         }
 
 
-        public async Task<object> GetAllWithCategories()
+        public async Task<List<ProductVM>> GetAllWithCategories()
         {
-            var carObject = await _context.Product
+            List<ProductVM> products = await _context.Product
                 //.Where(x => x.IsActive && !x.IsDeleted)
                 .Join(_context.Category, pr => pr.CategoryId, cr => cr.Id, (pr, cr) => new
                 {
                     Product = pr,
                     Category = cr
-                }).Select(s => new
+                }).Select(s => new ProductVM
                 {
-                    id = s.Product.Id,
-                    cid = s.Category.Id,
-                    stock = s.Product.Stock
+                    Id = s.Product.Id,
+                    CategoryId = s.Product.CategoryId,
+                    Name = s.Product.Name,
+                    Stock = s.Product.Stock,
+                    Price = s.Product.Price,
+                    IsActive = s.Product.IsActive,
+                    AddDate = s.Product.AddDate,
+                    UpdateDate = s.Product.UpdateDate,
+                    IsDeleted = s.Product.IsDeleted,
+                    DeletedDate = s.Product.DeletedDate,
+                    Category = s.Category
                 })
                 .ToListAsync().ConfigureAwait(false);
-
-            var aaaa = carObject;
-
-            return carObject;
+            return products;
         }
     }
 }

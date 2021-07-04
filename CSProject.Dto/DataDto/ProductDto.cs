@@ -11,5 +11,7 @@ namespace CSProject.Dto.DataDto
         public int Stock { get; set; }
 
         public decimal Price { get; set; }
+
+        public CategoryDto Category { get; set; }
     }
 }

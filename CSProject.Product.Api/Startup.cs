@@ -70,6 +70,8 @@ namespace CSProject.Product.Api
 
         private void ServiceDependency(IServiceCollection services)
         {
+            AutoMapperConfiguration.Initialize();
+
             services
                 .AddTransient<IProductRepository, ProductRepository>()
                 .AddTransient<IProductService, ProductService>();
