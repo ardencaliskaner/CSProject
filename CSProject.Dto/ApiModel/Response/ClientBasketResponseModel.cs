@@ -8,6 +8,6 @@ namespace CSProject.Dto.ApiModel.Response
 
         public int BasketId { get; set; }
 
-        public List<ProductResponseModel> Products { get; set; }
+        public List<BasketProductResponseModel> Products { get; set; }
     }
 }

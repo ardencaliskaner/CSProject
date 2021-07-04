@@ -13,6 +13,10 @@ namespace CSProject.Basket.Api
             {
                 cfg.CreateMap<BasketDto, Data.ORM.Model.Basket>();
                 cfg.CreateMap<Data.ORM.Model.Basket, BasketDto>();
+
+                cfg.CreateMap<Data.ORM.Model.Basket, BasketReponseModel>();
+                cfg.CreateMap<BasketReponseModel, Data.ORM.Model.Basket>();
+
                 cfg.CreateMap<BasketProduct, BasketProductDto>();
                 cfg.CreateMap<BasketProductDto, BasketProduct>();
                 cfg.CreateMap<ProductDto, ProductStockResponseModel>();

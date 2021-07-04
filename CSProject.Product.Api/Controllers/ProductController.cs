@@ -20,9 +20,14 @@ namespace CSProject.Product.Api.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<List<Dto.DataDto.ProductDto>> GetAll()
+        public async Task<ApiResponse<List<ProductResponseModel>>> GetAll()
         {
-            return await _productService.GetAll();
+            return new ApiResponse<List<ProductResponseModel>>()
+            {
+                Data = await _productService.GetAll(),
+                Message = "Success",
+                Status = "200"
+            };
         }
 
         [HttpPost("GetProducts")]
@@ -37,9 +42,15 @@ namespace CSProject.Product.Api.Controllers
         }
 
         [HttpGet("GetAllWithCategories")]
-        public async Task<List<Dto.DataDto.ProductDto>> GetAllWithCategories()
+        public async Task<ApiResponse<List<ProductResponseModel>>> GetAllWithCategories()
         {
-            return await _productService.GetAllWithCategories();
+            return new ApiResponse<List<ProductResponseModel>>()
+            {
+                Data = await _productService.GetAllWithCategories(),
+                Message = "Success",
+                Status = "200"
+            };
+
         }
 
         [HttpPost("GetProductStock")]

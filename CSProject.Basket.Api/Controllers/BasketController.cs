@@ -21,9 +21,15 @@ namespace CSProject.Basket.Api.Controllers
 
 
         [HttpGet("GetBaskets")]
-        public async Task<List<Dto.DataDto.BasketDto>> GetBaskets()
+        public async Task<ApiResponse<List<BasketReponseModel>>> GetBaskets()
         {
-            return await _basketService.GetAll();
+            return new ApiResponse<List<BasketReponseModel>>()
+            {
+                Data = await _basketService.GetAll(),
+                Message = "Success",
+                Status = "200"
+            };
+
         }
 
         [HttpPost("AddToBasket")]

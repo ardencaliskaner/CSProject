@@ -55,5 +55,37 @@ namespace CSProject.Basket.Data.Repository
 
             return basketProducts;
         }
+
+        public async Task<BasketProduct> GetWithBasketAndProductId(int basketId, int productId)
+        {
+            var basketProduct = await _context.BasketProduct
+              .Where(x => x.IsActive && !x.IsDeleted && x.BasketId == basketId && x.ProductId == productId)
+              .FirstOrDefaultAsync().ConfigureAwait(false);
+
+            return basketProduct;
+        }
+
+        public async Task<BasketProduct> UpdateBasketProduct(int basketId, int productId, int quantity)
+        {
+            var basketProduct = await _context.BasketProduct
+             .Where(x => x.IsActive && !x.IsDeleted && x.BasketId == basketId && x.ProductId == productId)
+             .FirstOrDefaultAsync().ConfigureAwait(false);
+
+            basketProduct.Quantity = quantity;
+
+            _context.BasketProduct.Update(basketProduct);
+            await _context.SaveChangesAsync();
+
+            return basketProduct;
+        }
+
+        public async Task<List<BasketProduct>> GetAllWithBasketId(int basketId)
+        {
+            var basketProducts = await _context.BasketProduct
+             .Where(x => x.IsActive && !x.IsDeleted && x.BasketId == basketId)
+             .ToListAsync().ConfigureAwait(false);
+
+            return basketProducts;
+        }
     }
 }

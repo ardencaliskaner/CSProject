@@ -26,38 +26,56 @@ namespace CSProject.Basket.Services
             _productApiService = productApiService;
         }
 
-        public async Task<List<BasketDto>> GetAll()
+        public async Task<List<BasketReponseModel>> GetAll()
         {
             var basketEntites = await _basketRepository.GetAll().ConfigureAwait(false);
-            return Mapper.Map<List<BasketDto>>(basketEntites);
+            return Mapper.Map<List<BasketReponseModel>>(basketEntites);
         }
 
         public async Task<ClientBasketResponseModel> AddToBasket(AddBasketRequest addBasketRequest)
         {
+            // Check product stock
             var product = await CheckProductStock(addBasketRequest.ProductId, addBasketRequest.Quantity);
 
+            // If client doesnt have basket create new
             var basket = await GetOrSetClientBasket(addBasketRequest.ClientId);
 
-            //Check Client Basket Product
+            //Check client basket to prevent to add more than stock
+            bool canClientAddToBasket = await CheckClientBasketQuantityOfProduct(addBasketRequest.ClientId, product.Id, addBasketRequest.Quantity, product.Stock);
 
-            var basketProduct = await AddProductToBasket(product.Id, product.Id, addBasketRequest.Quantity);
+            if (canClientAddToBasket)
+            {
+                var basketProduct = await AddProductToBasket(basket.Id, product.Id, addBasketRequest.Quantity);
+            }
 
             var clientBasketProductIds = await _basketProductRepository.GetBasketProductIds(basket.Id);
-
 
             List<ProductRequestModel> productRequestModels = clientBasketProductIds.Select(x => new ProductRequestModel
             {
                 Id = x
             }).ToList();
 
+            var productResponseModel = await GetClientBasketProducts(productRequestModels);
+
+            var basketProducts = await _basketProductRepository.GetAllWithBasketId(basket.Id).ConfigureAwait(false);
 
             var clientBasketResponseModel = new ClientBasketResponseModel
             {
                 ClientId = basket.ClientId,
                 BasketId = basket.Id,
-                Products = await GetClientBasketProducts(productRequestModels)
+                Products = productResponseModel.Select(x => new BasketProductResponseModel
+                {
+                    ProductId = x.ProductId,
+                    CategoryId = x.CategoryId,
+                    CategoryName = x.CategoryName,
+                    Stock = x.Stock,
+                    IsActive = x.IsActive,
+                    IsDeleted = x.IsDeleted,
+                    Price = x.Price,
+                    ProductName = x.Name,
+                    BasketQuantity = basketProducts.FirstOrDefault(y => y.ProductId == x.ProductId)?.Quantity ?? 0
+                }).ToList()
             };
-
 
             return clientBasketResponseModel;
         }
@@ -112,9 +130,39 @@ namespace CSProject.Basket.Services
 
         private async Task<BasketProductDto> AddProductToBasket(int basketId, int productId, int quantity)
         {
-            var basketProductEntity = await _basketProductRepository.AddBasketProduct(basketId, productId, quantity).ConfigureAwait(false);
+            var basketProduct = await _basketProductRepository.GetWithBasketAndProductId(basketId, productId).ConfigureAwait(false);
+
+            var basketProductEntity = default(Data.ORM.Model.BasketProduct);
+
+            if (basketProduct != null)
+            {
+                var totalQunatity = quantity + basketProduct.Quantity;
+
+                basketProductEntity = await _basketProductRepository.UpdateBasketProduct(basketId, productId, totalQunatity).ConfigureAwait(false);
+            }
+            else
+            {
+                basketProductEntity = await _basketProductRepository.AddBasketProduct(basketId, productId, quantity).ConfigureAwait(false);
+            }
 
             return Mapper.Map<BasketProductDto>(basketProductEntity);
+        }
+
+
+        private async Task<bool> CheckClientBasketQuantityOfProduct(int basketId, int productId, int quantity, int productStock)
+        {
+            var basketProduct = await _basketProductRepository.GetWithBasketAndProductId(basketId, productId).ConfigureAwait(false);
+
+            if (basketProduct != null)
+            {
+                var currentQuantity = basketProduct.Quantity;
+
+                return currentQuantity + quantity <= productStock;
+
+            }
+
+            return true;
+
         }
 
     }
